@@ -138,6 +138,7 @@ void Control(void){
       if(ev.EventID == -1) continue;
       queue = *dequeue(&queue);
       Server(&ev);
+      if(Show) DisplayEvent('c', &ev);
       BookKeeping();
     }
   }
@@ -163,7 +164,7 @@ void InterruptRoutineHandlerDevice(void){
     }
     else break;
   }
-  DisplayEvent('C', &BufferLastEvent[interruptingDevice]);
+  if(Show) DisplayEvent('i', &BufferLastEvent[interruptingDevice]);
   queue = *enqueue(&queue, BufferLastEvent[interruptingDevice]);
   Flags -= exp2(interruptingDevice);
 }
