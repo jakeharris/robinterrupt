@@ -133,7 +133,7 @@ int main (int argc, char **argv) {
 void Control(void){
 
   while (1) {
-    if(!isEmpty(&queue)) {
+    if(isEmpty(&queue) == FALSE) {
       Event ev = peek(&queue);
       if(ev.EventID == -1) continue;
       queue = *dequeue(&queue);
