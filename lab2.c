@@ -170,6 +170,7 @@ void InterruptRoutineHandlerDevice(void){
   }
   if(Show) DisplayEvent('i', &BufferLastEvent[interruptingDevice]);
   queue = *enqueue(&queue, BufferLastEvent[interruptingDevice]);
+  if(Show) DisplayEvent('t', &queue.contents[queue.head]);
   Flags -= exp2(interruptingDevice);
 }
 
