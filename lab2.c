@@ -51,8 +51,8 @@ EventQueue * enqueue(EventQueue *eq, Event e) {
 }
 
 int isEmpty(EventQueue *eq) {
-  if(eq->tail == -1) return FALSE;
-  return TRUE;
+  if(eq->tail == -1) return TRUE;
+  return FALSE;
 }
 
 EventQueue * dequeue(EventQueue *eq) {
