@@ -64,10 +64,6 @@ EventQueue * dequeue(EventQueue *eq) {
 
     eq->contents[eq->head].EventID = -1;
 
-    if(Show) {
-      printf("Dequeueing, head: %d, tail: %d\n", eq->head, eq->tail);
-    }
-
     if(eq->head == eq->tail) {
       // Now it's empty, so mess it all up
       eq->tail = -1;
@@ -142,7 +138,6 @@ void Control(void){
     if(isEmpty(&queue) == FALSE) {
       Event ev = *peek(&queue);
       if(&ev == NULL) continue;
-      if(Show) DisplayEvent('t', &ev);
       queue = *dequeue(&queue);
       Server(&ev);
       if(Show) DisplayEvent('c', &ev);
