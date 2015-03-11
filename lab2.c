@@ -30,8 +30,8 @@
 *                            Global data structures                           *
 \*****************************************************************************/
 typedef struct EventQueue {
-  int head;
-  int tail;
+  Identifier head;
+  Identifier tail;
   Event contents[MAX_NUMBER_EVENTS];
 } EventQueue;
 
@@ -39,7 +39,7 @@ EventQueue * enqueue(EventQueue *eq, Event e) {
   if(eq->tail + 1 == eq->head
   ||(eq->tail + 1 >= MAX_NUMBER_EVENTS && eq->head == 0)) {
     // we're full, so print that and drop the event
-    printf("Event queue is full. (Head: %d, tail: %d)", eq->head, eq->tail);
+    printf("Event queue is full. (Head: %d, tail: %d)\n", eq->head, eq->tail);
   }
   else {
     int newTail = eq->tail + 1;
@@ -50,6 +50,45 @@ EventQueue * enqueue(EventQueue *eq, Event e) {
   return eq;
 }
 
+int isEmpty(EventQueue *eq) {
+  if(eq->tail == -1) return FALSE;
+  return TRUE;
+}
+
+EventQueue * dequeue(EventQueue *eq) {
+  if(isEmpty(eq) == FALSE) {
+
+    eq->contents[eq->head].EventID = -1;
+
+    if(eq->head == eq->tail) {
+      // Now it's empty, so mess it all up
+      eq->tail = -1;
+    }
+    else if (eq->head + 1 == MAX_NUMBER_EVENTS) {
+      eq->head = 0;
+    }
+    else {
+      eq->head++;
+    }
+  }
+  else {
+    printf("Attempted to dequeue from an empty queue.");
+  }
+  return eq;
+}
+
+Event peek(EventQueue *eq) {
+  // If they're different (so the queue has contents),
+  // or they're the same, but nonnegative (so the queue has one element),
+  if(isEmpty(eq) == FALSE) {
+    // return the front element.
+    return eq->contents[eq->head];
+  }
+  // Otherwise, return a bogus event.
+  Event ev;
+  ev.EventID = -1;
+  return ev;
+}
 
 /*****************************************************************************\
 *                                  Global data                                *
@@ -93,7 +132,15 @@ int main (int argc, char **argv) {
  \***********************************************************************/
 void Control(void){
 
-  while (1);
+  while (1) {
+    if(queue.head != queue.tail) {
+      Event ev = peek(&queue);
+      if(ev.EventID == -1) continue;
+      queue = *dequeue(&queue);
+      Server(&ev);
+      BookKeeping();
+    }
+  }
 
 }
 
@@ -130,7 +177,8 @@ void InterruptRoutineHandlerDevice(void){
 \***********************************************************************/
 void BookKeeping(void){
   // For EACH device, print out the following metrics :
-  // 1) the percentage of missed events, 2) the average response time, and
+  // 1) the percentage of missed events,
+  // 2) the average response time, and
   // 3) the average turnaround time.
   // Print the overall averages of the three metrics 1-3 above
 }
