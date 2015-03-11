@@ -194,7 +194,7 @@ void BookKeeping(void){
     totalEvents += BufferLastEvent[x].EventID + 1;
   }
 
-  printf("Percentage of missed events: %3.3f", (float)events / totalEvents * 100);
-  printf("Average response time: %10.10f", responseTime/events);
-  printf("Average turn-around time: %10.10f", turnaroundTime/events);
+  printf("Percentage of missed events: %3.3f\n", (float)events / totalEvents * 100);
+  printf("Average response time: %10.10f\n", responseTime/events);
+  printf("Average turn-around time: %10.10f\n", turnaroundTime/events);
 }
