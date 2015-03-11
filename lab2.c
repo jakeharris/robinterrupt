@@ -62,7 +62,11 @@ int isEmpty(EventQueue *eq) {
 EventQueue * dequeue(EventQueue *eq) {
   if(isEmpty(eq) == FALSE) {
 
-    eq->contents[eq->head].EventID = -8;
+    eq->contents[eq->head].EventID = -1;
+
+    if(Show) {
+      printf("Dequeueing, head: %d, tail: %d", eq->head, eq->tail);
+    }
 
     if(eq->head == eq->tail) {
       // Now it's empty, so mess it all up
