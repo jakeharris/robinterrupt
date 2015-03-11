@@ -140,12 +140,12 @@ void Control(void){
 
   while (1) {
     if(isEmpty(&queue) == FALSE) {
-      Event * ev = peek(&queue);
-      if(ev == NULL) continue;
-      if(Show) DisplayEvent('t', ev);
+      Event ev = *peek(&queue);
+      if(&ev == NULL) continue;
+      if(Show) DisplayEvent('t', &ev);
       queue = *dequeue(&queue);
-      Server(ev);
-      if(Show) DisplayEvent('c', ev);
+      Server(&ev);
+      if(Show) DisplayEvent('c', &ev);
       BookKeeping();
     }
   }
