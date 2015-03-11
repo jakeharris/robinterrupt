@@ -191,6 +191,9 @@ void BookKeeping(void){
   int totalEvents = 0;
   int x;
   for(x = 0; x < MAX_NUMBER_DEVICES; x++) {
+    // If it's not a valid event, skip it
+    if(BufferLastEvent[x].EventID <= 0) continue;
+    // Accounting for conversion from index to size
     totalEvents += BufferLastEvent[x].EventID + 1;
   }
 
