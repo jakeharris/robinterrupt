@@ -81,16 +81,15 @@ EventQueue * dequeue(EventQueue *eq) {
   return eq;
 }
 
-Event peek(EventQueue *eq) {
+Event * peek(EventQueue *eq) {
   // If they're different (so the queue has contents),
   // or they're the same, but nonnegative (so the queue has one element),
   if(isEmpty(eq) == FALSE) {
     // return the front element.
-    return eq->contents[eq->head];
+    return &eq->contents[eq->head];
   }
   // Otherwise, return a bogus event.
-  Event ev;
-  ev.EventID = -1;
+  Event * ev = &(Event) { .EventID = -1, .DeviceID = -1 };
   return ev;
 }
 
@@ -138,12 +137,12 @@ void Control(void){
 
   while (1) {
     if(isEmpty(&queue) == FALSE) {
-      Event ev = peek(&queue);
-      if(Show) DisplayEvent('t', &ev);
-      if(ev.EventID == -1) continue;
+      Event * ev = peek(&queue);
+      if(Show) DisplayEvent('t', ev);
+      if(ev->EventID == -1) continue;
       queue = *dequeue(&queue);
-      Server(&ev);
-      if(Show) DisplayEvent('c', &ev);
+      Server(ev);
+      if(Show) DisplayEvent('c', ev);
       BookKeeping();
     }
   }
