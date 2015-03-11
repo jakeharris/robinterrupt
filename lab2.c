@@ -89,6 +89,7 @@ void Control(void){
 \***********************************************************************/
 void InterruptRoutineHandlerDevice(void){
   printf("An event occured at %f  Flags = %d \n", Now(), Flags);
+  DisplayEvent('m', &BufferLastEvent[Flags]);
   // Put Here the most urgent steps that cannot wait
 }
 
