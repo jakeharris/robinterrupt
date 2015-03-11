@@ -133,7 +133,7 @@ int main (int argc, char **argv) {
 void Control(void){
 
   while (1) {
-    if(queue.head != queue.tail) {
+    if(!isEmpty(&queue)) {
       Event ev = peek(&queue);
       if(ev.EventID == -1) continue;
       queue = *dequeue(&queue);
@@ -153,7 +153,7 @@ void Control(void){
 *           The id of the device is encoded in the variable flag        *
 \***********************************************************************/
 void InterruptRoutineHandlerDevice(void){
-  printf("An event occured at %f  Flags = %d \n", Now(), Flags);
+  if (Show) printf("An event occured at %f  Flags = %d \n", Now(), Flags);
   // Put Here the most urgent steps that cannot wait
   // Determine device id
   Identifier interruptingDevice = 0;
