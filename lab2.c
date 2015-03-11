@@ -139,6 +139,7 @@ void Control(void){
   while (1) {
     if(isEmpty(&queue) == FALSE) {
       Event ev = peek(&queue);
+      if(Show) DisplayEvent('t', &ev);
       if(ev.EventID == -1) continue;
       queue = *dequeue(&queue);
       Server(&ev);
@@ -170,7 +171,6 @@ void InterruptRoutineHandlerDevice(void){
   }
   if(Show) DisplayEvent('i', &BufferLastEvent[interruptingDevice]);
   queue = *enqueue(&queue, BufferLastEvent[interruptingDevice]);
-  if(Show) DisplayEvent('t', &queue.contents[queue.head]);
   Flags -= exp2(interruptingDevice);
 }
 
