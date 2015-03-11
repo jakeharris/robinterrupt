@@ -96,7 +96,9 @@ Event * peek(EventQueue *eq) {
 *                                  Global data                                *
 \*****************************************************************************/
 EventQueue queue = (EventQueue){ .head = 0, .tail = -1 };
-
+int events = 0;
+float responseTime = 0;
+float turnaroundTime = 0;
 
 /*****************************************************************************\
 *                               Function prototypes                           *
@@ -140,8 +142,8 @@ void Control(void){
       if(&ev == NULL) continue;
       queue = *dequeue(&queue);
       Server(&ev);
-      if(Show) DisplayEvent('c', &ev);
-      BookKeeping();
+      turnaroundTime += Now() - ev.When;
+      if(Show) DisplayEvent('C', &ev);
     }
   }
 
@@ -166,9 +168,11 @@ void InterruptRoutineHandlerDevice(void){
     }
     else break;
   }
-  if(Show) DisplayEvent('i', &BufferLastEvent[interruptingDevice]);
+  if(Show) DisplayEvent('I', &BufferLastEvent[interruptingDevice]);
   queue = *enqueue(&queue, BufferLastEvent[interruptingDevice]);
   Flags -= exp2(interruptingDevice);
+  responseTime += Now() - queue.contents[queue.tail].When;
+  events++;
 }
 
 
@@ -184,4 +188,13 @@ void BookKeeping(void){
   // 2) the average response time, and
   // 3) the average turnaround time.
   // Print the overall averages of the three metrics 1-3 above
+  int totalEvents = 0;
+  int x;
+  for(x = 0; x < MAX_NUMBER_DEVICES; x++) {
+    totalEvents += BufferLastEvent[x].EventID + 1;
+  }
+
+  printf("Percentage of missed events: %3.3f", (float)events / totalEvents * 100);
+  printf("Average response time: %10.10f", responseTime/events);
+  printf("Average turn-around time: %10.10f", turnaroundTime/events);
 }
