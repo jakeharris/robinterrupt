@@ -65,7 +65,7 @@ EventQueue * dequeue(EventQueue *eq) {
     eq->contents[eq->head].EventID = -1;
 
     if(Show) {
-      printf("Dequeueing, head: %d, tail: %d", eq->head, eq->tail);
+      printf("Dequeueing, head: %d, tail: %d\n", eq->head, eq->tail);
     }
 
     if(eq->head == eq->tail) {
