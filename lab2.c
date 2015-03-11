@@ -36,7 +36,11 @@ typedef struct EventQueue {
 } EventQueue;
 
 EventQueue * enqueue(EventQueue *eq, Event e) {
-  if(eq->tail + 1 == eq->head
+  if(eq->tail == -1) {
+    eq->tail = eq->head;
+    eq->contents[eq->head] = e;
+  }
+  else if(eq->tail + 1 == eq->head
   ||(eq->tail + 1 >= MAX_NUMBER_EVENTS && eq->head == 0)) {
     // we're full, so print that and drop the event
     printf("Event queue is full. (Head: %d, tail: %d)\n", eq->head, eq->tail);
