@@ -89,8 +89,7 @@ Event * peek(EventQueue *eq) {
     return &eq->contents[eq->head];
   }
   // Otherwise, return a bogus event.
-  Event * ev = &(Event) { .EventID = -1, .DeviceID = -1 };
-  return ev;
+  return NULL;
 }
 
 /*****************************************************************************\
@@ -139,7 +138,7 @@ void Control(void){
     if(isEmpty(&queue) == FALSE) {
       Event * ev = peek(&queue);
       if(Show) DisplayEvent('t', ev);
-      if(ev->EventID == -1) continue;
+      if(ev == NULL) continue;
       queue = *dequeue(&queue);
       Server(ev);
       if(Show) DisplayEvent('c', ev);
